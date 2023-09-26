@@ -1,33 +1,24 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+name: Java CI with Maven
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+jobs:
+  build:
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+    runs-on: ubuntu-latest
 
-### VS Code ###
-.vscode/
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+        architecture: x64
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    - name: Test with Maven
+      run: mvn test --file pom.xml
